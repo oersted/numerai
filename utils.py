@@ -1,3 +1,4 @@
+import math
 import pandas as pd
 from sklearn import linear_model
 from sklearn.metrics import log_loss
@@ -35,8 +36,14 @@ def val_data(path='data/numerai_tournament_data.csv'):
     
     return x_validation, y_validation
 
-def validate(y_true, y_pred):
-    return log_loss(y_true, y_pred)
+def validate(y_true, y_pred, bl=None, inspect=False):
+    logloss = log_loss(y_true, y_pred)
+    ret = logloss
+    if inspect:
+        ret = (logloss, -math.log(0.5) - logloss)
+        if baseline is not None:
+            ret += (bl - logloss,)
+    return ret
 
 
 def baseline(x_train=None, y_train=None, x_val=None, y_val=None):
@@ -52,7 +59,3 @@ def baseline(x_train=None, y_train=None, x_val=None, y_val=None):
     logloss = validate(y_val, y_val_pred)
     
     return logloss
-
-def compare(baseline, logloss):
-    diff = baseline - logloss
-    return diff/baseline
