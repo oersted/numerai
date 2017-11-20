@@ -3,13 +3,17 @@ import pandas as pd
 from sklearn import linear_model
 from sklearn.metrics import log_loss
 
-def train_data(path='data/numerai_training_data.csv'):
+def train_data(path='data/numerai_training_data.csv', weras=False):
 
     training_data = pd.read_csv(path, header=0)
     features = [f for f in list(training_data) if "feature" in f]
 
     X = training_data[features]
     Y = training_data["target"]
+    
+    if weras:
+        eras = training_data['era']
+        return X, Y, eras
 
     return X, Y
 
