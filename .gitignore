@@ -102,3 +102,6 @@ ENV/
 
 # Numer.ai data
 *.csv
+
+# Auto-sklearn
+.auto-sklearn
